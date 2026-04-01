@@ -31,5 +31,6 @@ SERVICE_ACCOUNT_INFO = {
 # IDs dos arquivos (pegue da URL do Google Drive de cada arquivo)
 # URL exemplo: https://drive.google.com/file/d/ESTE_TRECHO_AQUI/view
 FILE_IDS = {
-    "registros":    "14eyy7Ylqt_SlzVcTUm9N9FfITdWidOcYEUXVC8r9EgU", # URL da planilha que estamos usando
+    "registros":    "14eyy7Ylqt_SlzVcTUm9N9FfITdWidOcYEUXVC8r9EgU", # ID da tabela que será preenchida pelo cliente diariamente
+    "processed"  : "1eyXJ5VmBTd2RwK-bu_N94Ga8Lrev18NRV4yJpPoRR4o",  # ID da tabela processed (já transformada)
 }

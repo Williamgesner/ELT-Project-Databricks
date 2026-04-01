@@ -16,7 +16,11 @@ from googleapiclient.http import MediaIoBaseDownload
 
 def conectar_drive():
     """Autentica e retorna o cliente do Google Drive."""
-    SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
+    # Leitura e escrita de arquivos no Google Drive
+    SCOPES = [
+        "https://www.googleapis.com/auth/drive",
+        "https://www.googleapis.com/auth/spreadsheets"
+    ]
     credentials = service_account.Credentials.from_service_account_info(
         SERVICE_ACCOUNT_INFO, scopes=SCOPES
     )
@@ -69,9 +73,11 @@ def extrair_todas_as_tabelas():
 # Roda a extração e exibe todas as tabelas
 tabelas = extrair_todas_as_tabelas()
 
-print("\n\n📋 TABELAS DISPONÍVEIS:")
-for nome, df in tabelas.items():
-    print(f"\n{'='*60}")
-    print(f"📌 {nome}")
+# print("\n\n📋 TABELAS DISPONÍVEIS:")
+# for nome, df in tabelas.items():
+    # print(f"\n{'='*60}")
+    # print(f"📌 {nome}")
     # display(tabelas["registros__contas_a_pagar"].head(5)) # Se eu usar display, 100% dos campos precisam estar preenchidos. Se for apenas para visualizar e testar, usar print, pois é normal que algum campo não esteja preenchido por parte do cliente.
-    print (tabelas["registros__contas_a_pagar"].head(5))
+    # print (tabelas["registros__vendas_de_servicos"].head(5))
+
+    
