@@ -25,8 +25,10 @@ from config.settings          import SERVICE_ACCOUNT_INFO, FILE_IDS
 from extract.gdrive_connector import conectar_drive, extrair_todas_as_tabelas
 from transform.categorias     import transformar_categorias
 from transform.contatos       import transformar_contatos
+from transform.contas_pagar   import transformar_contas_pagar
 from models.dim_categorias    import aplicar_schema_dim_categorias
 from models.dim_contatos      import aplicar_schema_dim_contatos
+from models.fato_contas_pagar import aplicar_schema_fato_contas_pagar
 
 # =====================================================
 # CONFIGURAÇÃO
@@ -39,7 +41,7 @@ PROCESSED_FOLDER_ID = "1UL-geHSbquQpPT2PGWPjVHonoYQ9-5QE"
 PKS = {
     "dim_categorias"        :"categoria_id",
     "dim_contatos"          : "contato_id",
-    # "fato_contas_pagar"     : "contas_pagar_id",
+    "fato_contas_pagar"     : "contas_pagar_id",
     # "fato_vendas_servicos"  : "servico_id",
     # "dim_tempo"             : "data_completa",
     # "fato_caixa"            : "origem_saida",
@@ -252,18 +254,21 @@ def rodar_pipeline():
     # --------------------------------------------------
     print("\n🔄 [2/3] TRANSFORMAÇÃO")
 
-    df_categorias = transformar_categorias(tabelas["registros__categorias"])
-    df_contatos = transformar_contatos(tabelas["registros__contatos"])
-    df_categorias = aplicar_schema_dim_categorias(df_categorias)
-    df_contatos = aplicar_schema_dim_contatos(df_contatos)
+    df_categorias    = transformar_categorias(tabelas["registros__categorias"])
+    df_contatos      = transformar_contatos(tabelas["registros__contatos"])
+    df_contas_pagar  = transformar_contas_pagar(tabelas["registros__contas_a_pagar"])
+    df_categorias    = aplicar_schema_dim_categorias(df_categorias)
+    df_contatos      = aplicar_schema_dim_contatos(df_contatos)
+    df_contas_pagar  = aplicar_schema_fato_contas_pagar(df_contas_pagar)
 
     # --------------------------------------------------
     # 3. LOAD INCREMENTAL
     # --------------------------------------------------
     print("\n💾 [3/3] LOAD INCREMENTAL")
 
-    carregar_incremental(sheets, spreadsheet_id, df_categorias, "dim_categorias", PKS["dim_categorias"])
-    carregar_incremental(sheets, spreadsheet_id, df_contatos, "dim_contatos", PKS["dim_contatos"])
+    carregar_incremental(sheets, spreadsheet_id, df_categorias,   "dim_categorias", PKS["dim_categorias"])
+    carregar_incremental(sheets, spreadsheet_id, df_contatos,     "dim_contatos", PKS["dim_contatos"])
+    carregar_incremental(sheets, spreadsheet_id, df_contas_pagar, "fato_contas_pagar", PKS["fato_contas_pagar"])
 
     # --------------------------------------------------
     # RELATÓRIO FINAL
