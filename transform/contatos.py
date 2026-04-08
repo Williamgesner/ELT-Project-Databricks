@@ -29,12 +29,12 @@ def transformar_contatos(df: pd.DataFrame) -> pd.DataFrame:
     # 2. VALIDAR IDs NULOS
     # =====================================================
     if df["contato_id"].isnull().any():
-        raise ValueError("❌ ERRO: Existem contato_id nulos! Corrija na planilha antes de continuar.")
+        raise ValueError("❌ ERRO: Existem valores nulos! Corrija na planilha antes de continuar.") # Colunas de ID que não podem ser nulas
 
     # =====================================================
     # 3. CONVERTER TIPOS
     # =====================================================
-    df["contato_id"] = df["contato_id"].astype("int64")
+    df["contato_id"] = df["contato_id"].astype("int64")  # contato_id  → vem como float64 (Excel lê números assim: 1.0, 2.0...), por isso precisa virar int64
 
     # =====================================================
     # 4. STRINGS VAZIAS → NaN

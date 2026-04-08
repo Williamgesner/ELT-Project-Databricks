@@ -29,12 +29,12 @@ def transformar_categorias(df: pd.DataFrame) -> pd.DataFrame:
     # 2. VALIDAR IDs NULOS
     # =====================================================
     if df["categoria_id"].isnull().any():
-        raise ValueError("❌ ERRO: Existem categoria_id nulos! Corrija na planilha antes de continuar.")
+        raise ValueError("❌ ERRO: Existem valores nulos! Corrija na planilha antes de continuar.") # Colunas de ID que não podem ser nulas
 
     # =====================================================
     # 3. CONVERTER TIPOS
     # =====================================================
-    df["categoria_id"] = df["categoria_id"].astype("int64")
+    df["categoria_id"] = df["categoria_id"].astype("int64")  # categoria_id  → vem como float64 (Excel lê números assim: 1.0, 2.0...), por isso precisa virar int64
 
     # =====================================================
     # 4. STRINGS VAZIAS → NaN
