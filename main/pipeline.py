@@ -27,10 +27,12 @@ from transform.categorias         import transformar_categorias
 from transform.contatos           import transformar_contatos
 from transform.contas_pagar       import transformar_contas_pagar
 from transform.vendas_servicos    import transformar_vendas_servicos
+from transform.caixa              import transformar_caixa
 from models.dim_categorias        import aplicar_schema_dim_categorias
 from models.dim_contatos          import aplicar_schema_dim_contatos
 from models.fato_contas_pagar     import aplicar_schema_fato_contas_pagar
 from models.fato_vendas_servicos  import aplicar_schema_fato_vendas_servicos
+from models.fato_caixa            import aplicar_schema_fato_caixa
 
 # =====================================================
 # CONFIGURAÇÃO
@@ -45,7 +47,7 @@ PKS = {
     "dim_contatos"          : "contato_id",
     "fato_contas_pagar"     : "contas_pagar_id",
     "fato_vendas_servicos"  : "servico_id",
-    # "fato_caixa"            : "origem_saida",
+    "fato_caixa"            : "origem_saida",
 }
 
 # =====================================================
@@ -259,20 +261,23 @@ def rodar_pipeline():
     df_contatos        = transformar_contatos(tabelas["registros__contatos"])
     df_contas_pagar    = transformar_contas_pagar(tabelas["registros__contas_a_pagar"])
     df_vendas_servicos = transformar_vendas_servicos(tabelas["registros__vendas_de_servicos"])
+    df_caixa           = transformar_caixa(tabelas["registros__caixa"])
     df_categorias      = aplicar_schema_dim_categorias(df_categorias)
     df_contatos        = aplicar_schema_dim_contatos(df_contatos)
     df_contas_pagar    = aplicar_schema_fato_contas_pagar(df_contas_pagar)
     df_vendas_servicos = aplicar_schema_fato_vendas_servicos(df_vendas_servicos)
+    df_caixa           = aplicar_schema_fato_caixa(df_caixa)
 
     # --------------------------------------------------
     # 3. LOAD INCREMENTAL
     # --------------------------------------------------
     print("\n💾 [3/3] LOAD INCREMENTAL")
 
-    carregar_incremental(sheets, spreadsheet_id, df_categorias,   "dim_categorias", PKS["dim_categorias"])
-    carregar_incremental(sheets, spreadsheet_id, df_contatos,     "dim_contatos", PKS["dim_contatos"])
-    carregar_incremental(sheets, spreadsheet_id, df_contas_pagar, "fato_contas_pagar", PKS["fato_contas_pagar"])
+    carregar_incremental(sheets, spreadsheet_id, df_categorias,      "dim_categorias", PKS["dim_categorias"])
+    carregar_incremental(sheets, spreadsheet_id, df_contatos,        "dim_contatos", PKS["dim_contatos"])
+    carregar_incremental(sheets, spreadsheet_id, df_contas_pagar,    "fato_contas_pagar", PKS["fato_contas_pagar"])
     carregar_incremental(sheets, spreadsheet_id, df_vendas_servicos, "fato_vendas_servicos", PKS["fato_vendas_servicos"])
+    carregar_incremental(sheets, spreadsheet_id, df_caixa,           "fato_caixa", PKS["fato_caixa"])
 
     # --------------------------------------------------
     # RELATÓRIO FINAL
