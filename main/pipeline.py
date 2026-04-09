@@ -47,7 +47,7 @@ PKS = {
     "dim_contatos"          : "contato_id",
     "fato_contas_pagar"     : "contas_pagar_id",
     "fato_vendas_servicos"  : "servico_id",
-    "fato_caixa"            : "origem_saida",
+    "fato_caixa"            : "origem",
 }
 
 # =====================================================

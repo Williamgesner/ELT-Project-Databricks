@@ -8,7 +8,7 @@ from datetime import datetime
 # =====================================================
 
 SCHEMA_FATO_CAIXA = {
-    "origem_saida"      : {"tipo": "string",   "nullable": False, "pk": True,  "fk": None},
+    "origem"            : {"tipo": "string",   "nullable": False, "pk": True,  "fk": None},
     "data"              : {"tipo": "datetime", "nullable": False, "pk": False, "fk": None},
     "saldo_inicial"     : {"tipo": "float",    "nullable": False, "pk": False, "fk": None},
     "data_ingestao"     : {"tipo": "datetime", "nullable": False, "pk": False, "fk": None},
@@ -30,7 +30,7 @@ def aplicar_schema_fato_caixa(df: pd.DataFrame) -> pd.DataFrame:
     # =====================================================
     # 1. GARANTIR TIPOS FINAIS
     # =====================================================
-    df["origem_saida"]   = df["origem_saida"].astype("string")
+    df["origem"]         = df["origem"].astype("string")
     df["data"]           = pd.to_datetime(df["data"])
     df["saldo_inicial"]  = df["saldo_inicial"].astype("float")
 

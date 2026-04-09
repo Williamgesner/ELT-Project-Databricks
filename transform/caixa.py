@@ -28,7 +28,7 @@ def transformar_caixa(df: pd.DataFrame) -> pd.DataFrame:
     # =====================================================
     # 2. VALIDAR IDs NULOS
     # =====================================================
-    if df["origem_saida"].isnull().any():
+    if df["origem"].isnull().any():
         raise ValueError("❌ ERRO: Existem valores nulos! Corrija na planilha antes de continuar.") # Colunas de ID que não podem ser nulas
 
     # =====================================================
@@ -40,12 +40,12 @@ def transformar_caixa(df: pd.DataFrame) -> pd.DataFrame:
     # =====================================================
     # 5. GARANTIR TIPOS FINAIS
     # =====================================================
-    df["origem_saida"]  = df["origem_saida"].astype("string")
+    df["origem"]        = df["origem"].astype("string")
     df["data"]          = pd.to_datetime(df["data"])
     df["saldo_inicial"] = df["saldo_inicial"].astype("float")
 
     print(f"   ✅ {len(df)} registros transformados")
-    print(f"   ✅ Nulos em 'origem_saida': {df['origem_saida'].isnull().sum()}")
+    print(f"   ✅ Nulos em 'origem': {df['origem'].isnull().sum()}")
     print(f"   ✅ Nulos em 'data': {df['data'].isnull().sum()}")
     print(f"   ✅ Nulos em 'saldo_inicial': {df['saldo_inicial'].isnull().sum()}")
 
