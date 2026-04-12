@@ -9,7 +9,7 @@ from datetime import datetime
 
 SCHEMA_FATO_CATAS_PAGAR = {
     "contas_pagar_id"   : {"tipo": "int64",     "nullable": False, "pk": True,  "fk": None},
-    "categoria_id"      : {"tipo": "ins64",     "nullable": False, "pk": False, "fk": None},
+    "categoria_id"      : {"tipo": "int64",     "nullable": False, "pk": False, "fk": None},
     "valor"             : {"tipo": "float",     "nullable": True, "pk": False, "fk": None},
     "situacao"          : {"tipo": "string",    "nullable": True, "pk": False, "fk": None},
     "data_vencimento"   : {"tipo": "datetime",  "nullable": True, "pk": False, "fk": None},
