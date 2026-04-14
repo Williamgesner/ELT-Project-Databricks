@@ -43,9 +43,20 @@ def transformar_contatos(df: pd.DataFrame) -> pd.DataFrame:
     df["cpf_cnpj"]      = df["cpf_cnpj"].replace("", pd.NA)
 
     # =====================================================
-    # 5. PADRONIZAR STRINGS (Primeira letra maiúscula)
+    # 5. PADRONIZAR STRINGS (Primeiras letras maiúsculas)
     # =====================================================
-    df["nome_contato"]  = df["nome_contato"].str.strip().str.capitalize()
+    def formatar_nome(nome):
+        excecoes = {"da", "de", "do", "dos", "das", "e"}
+    
+        palavras = nome.strip().lower().split()
+        palavras_formatadas = [
+            p.capitalize() if p not in excecoes else p
+            for p in palavras
+        ]
+    
+        return " ".join(palavras_formatadas)
+
+    df["nome_contato"] = df["nome_contato"].apply(formatar_nome)
 
     # =====================================================
     # 6. GARANTIR TIPOS FINAIS
