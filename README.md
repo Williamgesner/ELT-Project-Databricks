@@ -1,4 +1,4 @@
-# 📊 ELT Pipeline — Databricks + Google Drive + Power BI
+# 📊 ETL Pipeline — Databricks + Google Drive + Power BI
 
 Pipeline de dados desenvolvido inteiramente no **Databricks**, com carga incremental automática e dashboard atualizado em tempo real.
 
@@ -7,7 +7,7 @@ Pipeline de dados desenvolvido inteiramente no **Databricks**, com carga increme
 ## 🧩 Visão Geral
 
 ```
-Google Sheets (RAW) → Databricks (ELT) → Google Drive (Processed) → Power BI (Dashboard)
+Google Sheets (RAW) → Databricks (ETL) → Google Drive (Processed) → Power BI (Dashboard)
 ```
 
 O cliente preenche manualmente uma planilha no Google Sheets (schema RAW). O pipeline extrai esses dados, aplica as transformações e modelos necessários, e salva o resultado em uma planilha separada no Google Drive (schema Processed). Essa planilha processada é a fonte de dados do Power BI.
