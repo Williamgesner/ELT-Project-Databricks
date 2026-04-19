@@ -28,11 +28,14 @@ from transform.contatos           import transformar_contatos
 from transform.contas_pagar       import transformar_contas_pagar
 from transform.vendas_servicos    import transformar_vendas_servicos
 from transform.caixa              import transformar_caixa
+from transform.metas              import transformar_metas
+
 from models.dim_categorias        import aplicar_schema_dim_categorias
 from models.dim_contatos          import aplicar_schema_dim_contatos
 from models.fato_contas_pagar     import aplicar_schema_fato_contas_pagar
 from models.fato_vendas_servicos  import aplicar_schema_fato_vendas_servicos
 from models.fato_caixa            import aplicar_schema_fato_caixa
+from models.dim_metas             import aplicar_schema_dim_metas
 
 # =====================================================
 # CONFIGURAÇÃO
@@ -43,11 +46,12 @@ PROCESSED_FOLDER_ID = "1UL-geHSbquQpPT2PGWPjVHonoYQ9-5QE"
 
 # Chave primária de cada tabela
 PKS = {
-    "dim_categorias"        :"categoria_id",
+    "dim_categorias"        : "categoria_id",
     "dim_contatos"          : "contato_id",
     "fato_contas_pagar"     : "contas_pagar_id",
     "fato_vendas_servicos"  : "servico_id",
     "fato_caixa"            : "origem",
+    "dim_metas"             : "data_referencia"
 }
 
 # =====================================================
@@ -262,11 +266,14 @@ def rodar_pipeline():
     df_contas_pagar    = transformar_contas_pagar(tabelas["registros__contas_a_pagar"])
     df_vendas_servicos = transformar_vendas_servicos(tabelas["registros__vendas_de_servicos"])
     df_caixa           = transformar_caixa(tabelas["registros__caixa"])
+    df_metas           = transformar_metas(tabelas["registros__metas"])
+    
     df_categorias      = aplicar_schema_dim_categorias(df_categorias)
     df_contatos        = aplicar_schema_dim_contatos(df_contatos)
     df_contas_pagar    = aplicar_schema_fato_contas_pagar(df_contas_pagar)
     df_vendas_servicos = aplicar_schema_fato_vendas_servicos(df_vendas_servicos)
     df_caixa           = aplicar_schema_fato_caixa(df_caixa)
+    df_metas           = aplicar_schema_dim_metas(df_metas)
 
     # --------------------------------------------------
     # 3. LOAD INCREMENTAL
@@ -278,6 +285,7 @@ def rodar_pipeline():
     carregar_incremental(sheets, spreadsheet_id, df_contas_pagar,    "fato_contas_pagar", PKS["fato_contas_pagar"])
     carregar_incremental(sheets, spreadsheet_id, df_vendas_servicos, "fato_vendas_servicos", PKS["fato_vendas_servicos"])
     carregar_incremental(sheets, spreadsheet_id, df_caixa,           "fato_caixa", PKS["fato_caixa"])
+    carregar_incremental(sheets, spreadsheet_id, df_metas,           "dim_metas", PKS["dim_metas"])
 
     # --------------------------------------------------
     # RELATÓRIO FINAL
