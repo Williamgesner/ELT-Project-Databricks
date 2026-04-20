@@ -154,7 +154,7 @@ python transform/tempo.py
 
 ## 📸 Resultado
 
-![Dashboard Comercial 1](https://github.com/user-attachments/assets/71efa705-1d83-4d65-b072-aaba29ae0ef2)
+![Dashboard Comercial 1](https://github.com/user-attachments/assets/4da79a4c-2d18-4085-82a4-5c654d24578c)
 
 **Observações**
 - *⁠TODOS OS DADOS APRESENTADOS ACIMA SÃO FICTÍCIOS E AS IDENTIDADES DOS CLIENTES E DA EMPRESA FORAM PRESERVADAS*
