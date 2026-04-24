@@ -66,8 +66,31 @@ def transformar_vendas_servicos(df: pd.DataFrame) -> pd.DataFrame:
     df["cliente_id"]       = df["cliente_id"].astype("int64")
     df["valor_total"]      = df["valor_total"].astype("float")
     df["origem_entrada"]   = df["origem_entrada"].astype("string")
-    df["data_servico"]     = pd.to_datetime(df["data_servico"]).dt.date
     df["descricao"]        = df["descricao"].astype("string")
+
+    # =====================================================
+    # 8. CONVERTER E CORRIGIR DATAS
+    # =====================================================
+    ano_atual = pd.Timestamp.today().year
+
+    # Extrai APENAS os anos — série temporária leve, descartada após o if
+    anos_raw = df["data_servico"].astype(str).str.extract(r'(\d{4,})')[0].astype(float)
+    mask_ano_errado = anos_raw.notna() & (anos_raw != ano_atual)
+
+    # Corrige SOMENTE as linhas problemáticas — antes de qualquer conversão
+    if mask_ano_errado.any():
+        print(f"   ⚠️  {mask_ano_errado.sum()} data(s) com ano incorreto — corrigindo para {ano_atual}:")
+        for idx in df[mask_ano_errado].index:
+            print(f"      Linha {idx + 2}: '{df.loc[idx, 'data_servico']}' → corrigida")
+
+        df.loc[mask_ano_errado, "data_servico"] = (
+            df.loc[mask_ano_errado, "data_servico"]
+            .astype(str)
+            .str.replace(r'\d{4,}', str(ano_atual), regex=True, n=1)
+        )
+
+    # Converte UMA vez, já com tudo correto
+    df["data_servico"] = pd.to_datetime(df["data_servico"], dayfirst=True, errors="coerce").dt.date
 
     print(f"   ✅ {len(df)} registros transformados")
     print(f"   ✅ Nulos em 'valor_total':           {df['valor_total'].isnull().sum()}")
